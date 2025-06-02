@@ -1,0 +1,37 @@
+{
+    "title": "Sentinel Data Fusion",
+    "summary": "Fusion of Sentinel-2 and Sentinel-3 data to improve Sentinel-3 spatial resolution",
+    "description": [
+        "Sentinel Data Fusion is an application using the DEEPaaS API.\n",
+        "Fusion of Sentinel-2 and Sentinel-3 data to improve Sentinel-3 spatial resolution"
+    ],
+    "keywords": [
+        "docker",
+        "api-v2"
+    ],
+    "license": "MIT",
+    "date_creation": "2025-06-02",
+    "sources": {
+        "dockerfile_repo": "https://github.com/ai4os-hub/sentinel-data-fusion",
+        "docker_registry_repo": "ai4oshub/sentinel-data-fusion",
+        "code": "https://github.com/ai4os-hub/sentinel-data-fusion",
+        "ai4_template": "ai4-template-adv/2.1.0"
+    },
+    "continuous_integration": {
+        "build_status_badge": "https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/sentinel-data-fusion/main",
+        "build_status_url": "https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/sentinel-data-fusion/job/main/"
+    },
+    "tosca": [
+        {
+            "title": "Mesos (CPU)",
+            "url": "https://raw.githubusercontent.com/indigo-dc/tosca-templates/master/deep-oc/deep-oc-marathon-webdav.yml",
+            "inputs": [
+                "rclone_conf",
+                "rclone_url",
+                "rclone_vendor",
+                "rclone_user",
+                "rclone_pass"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+# .sqa/config.yml - jenkins-pipeline-library configuration file
+sqa_criteria:
+  qc_style:
+    repos:
+      sentinel-data-fusion:
+        container: testing
+        tox:
+          tox_file: tox.ini
+          testenv:
+            - qc.sty
+  qc_coverage:
+    repos:
+      sentinel-data-fusion:
+        container: testing
+        tox:
+          tox_file: tox.ini
+          testenv:
+            - qc.cov
+  qc_security:
+    repos:
+      sentinel-data-fusion:
+        container: testing
+        tox:
+          tox_file: tox.ini
+          testenv:
+            - qc.sec
+
+environment:
+  GIT_COMMITTER_NAME: "Fernando Aguilar Gómez (IFCA-CSIC), María Peña (IFCA-CSIC), Daniel García Díaz (IFCA-CSIC)"
+  GIT_COMMITTER_EMAIL: "aguilarf@ifca.unican.es, penam@ifca.unican.es, garciad@ifca.unican.es"
+  LANG: C.UTF-8
+
+timeout: 600
