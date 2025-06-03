@@ -17,10 +17,13 @@ links:
   # weights: http://add-some-weights-url.com
   # citation: http://add-some-DOI-url.com
   # base_model: http://add-some-link-to-another-model.com
-#tags:        # required property, add user-defined tags that you consider relevant
-  # - deep learning
-#tasks:       # required property, uncomment together with relevant items
-  # - Computer Vision
+tags:        # required property, add user-defined tags that you consider relevant
+  - deep learning
+  - remote sensing
+  - data fusion
+  - hyperspectral
+tasks:       # required property, uncomment together with relevant items
+  - Computer Vision
   # - Natural Language Processing
   # - Time Series
   # - Recommender Systems
@@ -29,29 +32,28 @@ links:
   # - Classification
   # - Clustering
   # - Dimensionality Reduction
-  # - Generative Models
+  - Generative Models
   # - Graph Neural Networks
   # - Optimization
   # - Reinforcement Learning
   # - Transfer Learning
   # - Uncertainty Estimation
-  # - Other
-#categories:  # required property, uncomment together with relevant items
+  - Other
+categories:  # required property, uncomment together with relevant items
   # - AI4 trainable
-  # - AI4 pre trained
-  # - AI4 inference
+  - AI4 pre trained
+  - AI4 inference
   # - AI4 tools
-#libraries:   # required property, uncomment together with relevant items
-  # - TensorFlow
-  # - PyTorch
-  # - Keras
+libraries:   # required property, uncomment together with relevant items
+  - TensorFlow
+  - Keras
   # - Scikit-learn
   # - XGBoost
   # - LightGBM
   # - CatBoost
   # - Other
-#data-type:   # optional, uncomment together with relevant items
-  # - Image
+data-type:   # optional, uncomment together with relevant items
+  - Image
   # - Text
   # - Time Series
   # - Tabular
