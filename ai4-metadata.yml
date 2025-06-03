@@ -6,8 +6,8 @@ description: |-
   Fusion of Sentinel-2 and Sentinel-3 data to improve Sentinel-3 spatial resolution
 # doi: http://add-some-DOI-url.com
 dates:
-  created: 2025-06-02
-  updated: 2025-06-02
+  created: "2025-06-02"
+  updated: "2025-06-02"
 links:
   ai4_template: ai4-template-adv/2.1.0
   source_code: https://github.com/ai4os-hub/sentinel-data-fusion
