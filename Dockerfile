@@ -71,8 +71,42 @@ ENV SHELL /bin/bash
 # Install user app
 RUN git clone -b $branch https://github.com/ai4os-hub/sentinel-data-fusion && \
     cd  sentinel-data-fusion && \
-    pip3 install --no-cache-dir -e . && \
-    cd ..
+    wget https://share.services.ai4os.eu/s/NqDtGBi49cZBTsT/download/cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h && \
+    mv cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h5 models && \
+    pip3 install --no-cache-dir -e .
+
+ENV PYTHONPATH=/app:$PYTHONPATH
+
+RUN  cd ..
+
+# --- Actualización de repositorios e instalación de dependencias de sistema ---
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      gdal-bin \
+      libgdal-dev \
+      python3-gdal \
+      libgl1 \
+      libgl1-mesa-glx && \
+    rm -rf /var/lib/apt/lists/*
+
+# --- Variables de entorno para compilar los bindings de GDAL ---
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
+    C_INCLUDE_PATH=/usr/include/gdal
+
+# --- Actualiza pip y instala los paquetes Python requeridos ---
+RUN python3 -m pip install --upgrade pip && \
+    pip install --no-cache-dir \
+      gdal==3.4.1 \
+      "numpy<2" \
+      "opencv-python<4.12" \
+      scikit-image \
+      xmltodict \
+      tqdm \
+      rasterio \
+      xarray \
+      shapely \
+      rioxarray \
+      netCDF4
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888
