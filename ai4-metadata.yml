@@ -1,0 +1,72 @@
+metadata_version: 2.0.0
+title: sentinel-data-fusion
+summary: "Sentinel-2 and Sentinel-3 data fusion with CNN and GAN"
+description: |-
+  sentinel_data_fusion is an application using the DEEPaaS API.
+  Sentinel-2 and Sentinel-3 data fusion with CNN and GAN.
+  With this services, users can combine data for a given area of
+  interest and a certain period of time
+# doi: http://add-some-DOI-url.com
+dates:
+  created: "2025-07-22"
+  updated: "2025-07-22"
+links:
+  ai4_template: ai4-template/2.2.0
+  source_code: https://github.com/ai4os-hub/sentinel-data-fusion
+  docker_image: ai4oshub/sentinel-data-fusion
+  # documentation: http://add-some-documentation.com
+  # dataset: http://add-some-url-pointing-to-your-dataset.com
+  # weights: http://add-some-weights-url.com
+  # citation: http://add-some-DOI-url.com
+  # base_model: http://add-some-link-to-another-model.com
+#tags:        # required property, add user-defined tags that you consider relevant
+  # - deep learning
+#tasks:       # required property, uncomment together with relevant items
+  # - Computer Vision
+  # - Natural Language Processing
+  # - Time Series
+  # - Recommender Systems
+  # - Anomaly Detection
+  # - Regression
+  # - Classification
+  # - Clustering
+  # - Dimensionality Reduction
+  # - Generative Models
+  # - Graph Neural Networks
+  # - Optimization
+  # - Reinforcement Learning
+  # - Transfer Learning
+  # - Uncertainty Estimation
+  # - Other
+#categories:  # required property, uncomment together with relevant items
+  # - AI4 trainable
+  # - AI4 pre trained
+  # - AI4 inference
+  # - AI4 tools
+#libraries:   # required property, uncomment together with relevant items
+  # - TensorFlow
+  # - PyTorch
+  # - Keras
+  # - Scikit-learn
+  # - XGBoost
+  # - LightGBM
+  # - CatBoost
+  # - Other
+#data-type:   # optional, uncomment together with relevant items
+  # - Image
+  # - Text
+  # - Time Series
+  # - Tabular
+  # - Graph
+  # - Audio
+  # - Video
+  # - Other
+#resources:   # optional, uncomment together with relevant items
+  #inference:
+  #  cpu: 2
+  #  gpu: 0
+  #  memory_MB: 1000
+  #  gpu_memory_MB: 1000
+  #  gpu_compute_capability: 100.0
+  #  #  we use on purpose a unreasonable compute capability so that we can test the warning system
+  #  storage_MB: 1000  

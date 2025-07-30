@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentinel-data-fusion"
+authors = [
+    { name = "Fernando Aguilar (IFCA-CSIC)", email = "aguilarf@ifca.unican.es" },
+    { name = "MAr´ia Peña (IFCA-CSIC)", email = "penam@ifca.unican.es" },
+    { name = "Daniel Garc´ia (IFCA-CSIC)", email = "garciad@ifca.unican.es" },
+]
+description = "Sentinel-2 and Sentinel-3 data fusion with CNN and GAN"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: AI/ML/DL Researchers",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+"Homepage" = "https://github.com/ai4os-hub/sentinel-data-fusion"
+"Bug Tracker" = "https://github.com/ai4os-hub/sentinel-data-fusion/issues"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+env = [
+    "SENTINEL_DATA_FUSION_DATA_PATH=tests/data",
+    "SENTINEL_DATA_FUSION_MODELS_PATH=tests/models",
+]
+# Allow test files to share names
+# https://docs.pytest.org/en/7.1.x/explanation/goodpractices.html
+addopts = "--import-mode=importlib"
+
+[tool.setuptools.packages.find]
+where = ["sentinel_data_fusion"]
+include = ["sentinel_data_fusion", "sentinel_data_fusion.*"]
+
+
+[tool.setuptools.package-dir]
+"sentinel_data_fusion" = "sentinel_data_fusion"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+version = { file = "VERSION" }
+
+[tool.poetry]
+name = "sentinel-data-fusion"
+version = "0.1.0"
+description = "..."
+packages = [
+  { include = "sentinel_data_fusion" }
+]
+
+[project.entry-points."deepaas.v2.model"]
+sentinel_data_fusion = "sentinel_data_fusion.api"
