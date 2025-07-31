@@ -1,5 +1,5 @@
 # sentinel-data-fusion
-[![Build Status](https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/sentinel-data-fusion/test)](https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/sentinel-data-fusion/job/test/)
+[![Build Status](https://jenkins.services.ai4os.eu/buildStatus/icon?job=AI4OS-hub/sentinel-data-fusion/main)](https://jenkins.services.ai4os.eu/job/AI4OS-hub/job/sentinel-data-fusion/job/main/)
 
 Sentinel-2 and Sentinel-3 data fusion with CNN and GAN
 
