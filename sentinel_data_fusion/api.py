@@ -59,10 +59,9 @@ def get_metadata():
         logger.debug("Package model metadata: %s", metadata)
         names = re.findall(r'"([^"]+)"', metadata['author'])
         if names:
-	    metadata["author"] = ", ".join(names)
-	else:
-	    # si no había comillas dobles, elimina cualquier resto de ellas
-	    metadata["author"] = metadata["author"].strip('"')
+	        metadata["author"] = ", ".join(names)
+	    else:
+	        metadata["author"] = metadata["author"].strip('"')
         return metadata
     except Exception as err:
         logger.error("Error collecting metadata: %s", err, exc_info=True)
