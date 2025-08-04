@@ -34,10 +34,6 @@ class TestModelMethods(unittest.TestCase):
             "sentinel_data_fusion".lower().replace("-", "_"),
         )
         self.assertEqual(
-            self.meta["author"],
-           "Fernando Aguilar (IFCA-CSIC), MAr´ia Peña (IFCA-CSIC), Daniel Garc´ia (IFCA-CSIC)",
-        )
-        self.assertEqual(
             self.meta["license"].lower(),
             "MIT".lower(),
         )

@@ -1,10 +1,9 @@
 import os
-import shutil
 import numpy as np
 from keras.utils import Sequence
 
 
-def load_data_splits(splits_dir, split_name='train'): 
+def load_data_splits(splits_dir, split_name="train"):
     """
     Load the data arrays from the [train/val/test].txt files.
 
@@ -19,20 +18,25 @@ def load_data_splits(splits_dir, split_name='train'):
     X : Numpy array of strs
         First colunm: Contains 'absolute_path_to_file' to images.
     """
-    if '{}.txt'.format(split_name) not in os.listdir(splits_dir):
-        raise ValueError("Invalid value for the split_name parameter: there is no `{}.txt` file in the `{}` "
-                         "directory.".format(split_name, splits_dir))
+    if "{}.txt".format(split_name) not in os.listdir(splits_dir):
+        raise ValueError(
+            "Invalid value for the split_name parameter: there is no `{}.txt` file in the `{}` "
+            "directory.".format(split_name, splits_dir)
+        )
 
     # Loading splits
     print("Loading {} data...".format(split_name))
-    split = np.genfromtxt(os.path.join(splits_dir, '{}.txt'.format(split_name)), dtype='str', delimiter=' ')
-    
+    split = np.genfromtxt(
+        os.path.join(splits_dir, "{}.txt".format(split_name)),
+        dtype="str",
+        delimiter=" ",
+    )
+
     return split
 
 
-
 class data_sequence(Sequence):
-    
+
     def __init__(self, tiles, max_res, batch_size=32, patches_dir=None, shuffle=True):
 
         if isinstance(tiles, str):
@@ -44,8 +48,10 @@ class data_sequence(Sequence):
 
         inputs, labels = self.tiles_to_samples(tiles, patches_dir, resolutions)
         assert len(inputs) == len(labels)
-        assert len(inputs) != 0, "Data generator has length zero. Please provide some data for training/validation." \
-                                 "If you don't want to use validation then remove the empty val.txt file."
+        assert len(inputs) != 0, (
+            "Data generator has length zero. Please provide some data for training/validation."
+            "If you don't want to use validation then remove the empty val.txt file."
+        )
 
         self.inputs = inputs
         self.labels = labels
@@ -64,23 +70,28 @@ class data_sequence(Sequence):
             if not file_list:
                 continue
             else:
-                nums = [int(f.split('_')[1].split('.')[0]) for f in file_list]
+                nums = [int(f.split("_")[1].split(".")[0]) for f in file_list]
                 num_patches = np.amax(nums) + 1
-                
+
             for i in range(num_patches):
-                tmp_input = {str(res): os.path.join(tilepath, 'input{}_{}.npy'.format(res, i)) for res in resolutions}
-                tmp_label = os.path.join(tilepath, 'label{}_{}.npy'.format(self.label_res, i))
+                tmp_input = {
+                    str(res): os.path.join(tilepath, "input{}_{}.npy".format(res, i))
+                    for res in resolutions
+                }
+                tmp_label = os.path.join(
+                    tilepath, "label{}_{}.npy".format(self.label_res, i)
+                )
 
                 inputs.append(tmp_input)
                 labels.append(tmp_label)
-                
+
         return inputs, labels
 
     def __len__(self):
         return int(np.ceil(len(self.inputs) / float(self.batch_size)))
 
     def __getitem__(self, idx):
-        batch_idxs = self.indexes[idx*self.batch_size: (idx+1)*self.batch_size]
+        batch_idxs = self.indexes[idx * self.batch_size : (idx + 1) * self.batch_size]
 
         batch_X = {res: [] for res in self.resolutions}
         batch_y = []
@@ -101,11 +112,11 @@ class data_sequence(Sequence):
             np.random.shuffle(self.indexes)
 
 
-class NPYDataGenerator:    
+class NPYDataGenerator:
     def __init__(self, tiles, max_res, batch_size=32, patches_dir=None, shuffle=True):
         """
         Inicializa el data generator.
-        
+
         :param tiles: Lista de imagenes con trozos a entrenar
         :param max_res: resoluciones para entrenar
         :param n_batches: Número de DataFrames a incluir en cada "súper-lote".
@@ -121,8 +132,10 @@ class NPYDataGenerator:
 
         inputs, labels = self.tiles_to_samples(tiles, patches_dir, resolutions)
         assert len(inputs) == len(labels)
-        assert len(inputs) != 0, "Data generator has length zero. Please provide some data for training/validation." \
-                                 "If you don't want to use validation then remove the empty val.txt file."
+        assert len(inputs) != 0, (
+            "Data generator has length zero. Please provide some data for training/validation."
+            "If you don't want to use validation then remove the empty val.txt file."
+        )
 
         self.inputs = inputs
         self.labels = labels
@@ -142,16 +155,21 @@ class NPYDataGenerator:
             if not file_list:
                 continue
             else:
-                nums = [int(f.split('_')[1].split('.')[0]) for f in file_list]
+                nums = [int(f.split("_")[1].split(".")[0]) for f in file_list]
                 num_patches = np.amax(nums) + 1
-                
+
             for i in range(num_patches):
-                tmp_input = {str(res): os.path.join(tilepath, 'input{}_{}.npy'.format(res, i)) for res in resolutions}
-                tmp_label = os.path.join(tilepath, 'label{}_{}.npy'.format(self.label_res, i))
+                tmp_input = {
+                    str(res): os.path.join(tilepath, "input{}_{}.npy".format(res, i))
+                    for res in resolutions
+                }
+                tmp_label = os.path.join(
+                    tilepath, "label{}_{}.npy".format(self.label_res, i)
+                )
 
                 inputs.append(tmp_input)
                 labels.append(tmp_label)
-                
+
         return inputs, labels
 
     def __len__(self):
@@ -163,23 +181,30 @@ class NPYDataGenerator:
         """
         if self.current_index >= len(self.inputs):
             self.current_index = 0
-            
-        sub_inputs = self.inputs[self.current_index:self.current_index+self.batch_size]
+
+        sub_inputs = self.inputs[
+            self.current_index : self.current_index + self.batch_size
+        ]
         if len(sub_inputs) != self.batch_size:
             # Repetir los elementos del array hasta superar el tamaño objetivo
-            expanded_array = np.tile(sub_inputs, (self.batch_size // len(sub_inputs) + 1))
-            
+            expanded_array = np.tile(
+                sub_inputs, (self.batch_size // len(sub_inputs) + 1)
+            )
+
             # Recortar el array para que tenga exactamente el tamaño deseado
-            sub_inputs = expanded_array[:self.batch_size]
-            
-        sub_labels = self.labels[self.current_index:self.current_index+self.batch_size]
+            sub_inputs = expanded_array[: self.batch_size]
+
+        sub_labels = self.labels[
+            self.current_index : self.current_index + self.batch_size
+        ]
         if len(sub_labels) != self.batch_size:
             # Repetir los elementos del array hasta superar el tamaño objetivo
-            expanded_array = np.tile(sub_labels, (self.batch_size // len(sub_labels) + 1))
-            
-            # Recortar el array para que tenga exactamente el tamaño deseado
-            sub_labels = expanded_array[:self.batch_size]
+            expanded_array = np.tile(
+                sub_labels, (self.batch_size // len(sub_labels) + 1)
+            )
 
+            # Recortar el array para que tenga exactamente el tamaño deseado
+            sub_labels = expanded_array[: self.batch_size]
 
         batch_X = {res: [] for res in self.resolutions}
         batch_y = []
@@ -207,7 +232,5 @@ class NPYDataGenerator:
                 if X:
                     break  # Retorna lo que se ha acumulado hasta ahora
                 else:
-                    raise StopIteration  # No quedan más DataFrames para procesar       
+                    raise StopIteration  # No quedan más DataFrames para procesar
         return X, y
-
-

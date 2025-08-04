@@ -30,8 +30,6 @@ import logging
 from sentinel_data_fusion import config
 from sentinel_data_fusion.misc import _catch_error
 import sentinel_data_fusion.misc as misc
-from aiohttp.web import HTTPBadRequest
-import os
 from webargs import fields
 from marshmallow import validate
 
@@ -40,6 +38,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(config.LOG_LEVEL)
 
 BASE_DIR = Path(__file__).resolve().parents[1]
+
 
 @_catch_error
 def get_metadata():
@@ -71,7 +70,7 @@ def get_predict_args():
     """
     **Descripción general de la operación**
 
-    Aquí puedes explicar **qué hace** este endpoint,  
+    Aquí puedes explicar **qué hace** este endpoint,
     qué retorno esperas, advertencias, links de ayuda, etc.
 
     Luego vienen los parámetros:
@@ -89,38 +88,37 @@ def get_predict_args():
             missing=[43.5, -4.13, 43.39, -3.43],
             location="json",
             description="Bounding box: [N, W, S, E] - Decimal. To get the coordinates, you can use services like https://boundingbox.klokantech.com/",
-            validate=validate.Length(equal=4)
+            validate=validate.Length(equal=4),
         ),
         "start_date(YYYY-MM-DD)": fields.Str(
             required=False,
             missing="2024-01-01",
             location="json",
-            description="Start date (YYYY-MM-DD)"
+            description="Start date (YYYY-MM-DD)",
         ),
         "end_date(YYYY-MM-DD)": fields.Str(
             required=False,
             missing="2025-07-01",
             location="json",
-            description="End date (YYYY-MM-DD)"
+            description="End date (YYYY-MM-DD)",
         ),
         "output_name": fields.Str(
             required=False,
             missing="output_file",
             location="json",
-            description="Name of file to fusion"
+            description="Name of file to fusion",
         ),
         "accept": fields.Str(
             required=False,
             missing="image/tiff",
             location="headers",
             description="Media type acceptable for the response",
-            validate=validate.OneOf([
-                "application/json",
-                "image/tiff",
-                "application/zip"
-            ])
+            validate=validate.OneOf(
+                ["application/json", "image/tiff", "application/zip"]
+            ),
         ),
     }
+
 
 def predict(**kwargs):
     """
@@ -128,16 +126,20 @@ def predict(**kwargs):
     según el header 'accept'.
     """
     lon_min, lat_min, lon_max, lat_max = kwargs["bbox(N,W,S,E)"]
-    start = kwargs["start_date(YYYY-MM-DD)"]
-    end   = kwargs["end_date(YYYY-MM-DD)"]
+    start_date = kwargs["start_date(YYYY-MM-DD)"]
+    end_date = kwargs["end_date(YYYY-MM-DD)"]
     output_name = kwargs["output_name"]
     accept = kwargs.get("accept")
 
     # Llama a tu función que crea el .tif y devuelve su ruta
     tif_path = misc.predict_for_bbox(
-        lon_min=lon_min, lat_min=lat_min,
-        lon_max=lon_max, lat_max=lat_max,
-        start_date=start, end_date=end, output_name=output_name
+        lon_min=lon_min,
+        lat_min=lat_min,
+        lon_max=lon_max,
+        lat_max=lat_max,
+        start_date=start_date,
+        end_date=end_date,
+        output_name=output_name,
     )
 
     if accept == "image/tiff":
@@ -148,12 +150,17 @@ def predict(**kwargs):
 
     # Fallback a JSON si se pidiera application/json
     return {
-        "bbox": {"lon_min": lon_min, "lat_min": lat_min,
-                 "lon_max": lon_max, "lat_max": lat_max},
-        "period": {"from": start_date.isoformat(),
-                   "to":   end_date.isoformat()},
-        "tif_path": tif_path
+        "bbox": {
+            "lon_min": lon_min,
+            "lat_min": lat_min,
+            "lon_max": lon_max,
+            "lat_max": lat_max,
+        },
+        "period": {"from": start_date.isoformat(), "to": end_date.isoformat()},
+        "tif_path": tif_path,
     }
+
+
 #
 #
 # @_catch_error

@@ -30,6 +30,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         git \
         curl \
         nano \
+        wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Update python packages
@@ -41,7 +42,7 @@ RUN python3 --version && \
 # [1]: https://github.com/pypa/setuptools/issues/3301
 
 # Set LANG environment
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # Set the working directory
 WORKDIR /srv
@@ -58,7 +59,7 @@ RUN curl -O https://downloads.rclone.org/rclone-current-linux-amd64.deb && \
 ENV RCLONE_CONFIG=/srv/.rclone/rclone.conf
 
 # Disable FLAAT authentication by default
-ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER yes
+ENV DISABLE_AUTHENTICATION_AND_ASSUME_AUTHENTICATED_USER=yes
 
 # Initialization scripts
 # deep-start can install JupyterLab or VSCode if requested
@@ -66,14 +67,15 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
     ln -s /srv/.deep-start/deep-start.sh /usr/local/bin/deep-start
 
 # Necessary for the Jupyter Lab terminal
-ENV SHELL /bin/bash
+ENV SHELL=/bin/bash
 
 # Install user app
-RUN git clone -b $branch https://github.com/ai4os-hub/sentinel-data-fusion && \
-    cd  sentinel-data-fusion && \
-    wget https://share.services.ai4os.eu/s/NqDtGBi49cZBTsT/download/cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h && \
-    mv cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h5 models && \
-    pip3 install --no-cache-dir -e .
+RUN git clone -b $branch https://github.com/ai4os-hub/sentinel-data-fusion
+RUN cd  sentinel-data-fusion
+RUN wget https://share.services.ai4os.eu/s/NqDtGBi49cZBTsT/download/cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h
+RUN mv cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h models
+WORKDIR /srv/sentinel-data-fusion
+RUN pip3 install --no-cache-dir -e .
 
 ENV PYTHONPATH=/app:$PYTHONPATH
 

@@ -1,0 +1,14 @@
+# Dockerfile.override
+FROM ai4oshub/ci-images:python3.11
+
+USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      python3-gdal \
+      gdal-bin \
+      libgdal-dev \
+      libgl1-mesa-glx && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install gdal==3.4.1

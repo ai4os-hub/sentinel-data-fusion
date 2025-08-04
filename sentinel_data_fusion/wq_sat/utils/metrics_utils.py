@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def mae(ms, f):
     """
     Mean Absolute Error
@@ -8,10 +9,10 @@ def mae(ms, f):
     f: arr
         Super´-resolved band
     """
-    
+
     x = ms.flatten()
     y = f.flatten()
-    
+
     n = len(x)
     dif_abs = abs(y - x)
     mae = np.sum(dif_abs) / n
@@ -27,21 +28,24 @@ def rmse(ms, f):
     f: arr
         Super´-resolved band
     """
-    
+
     x = ms.flatten()
     y = f.flatten()
-    
+
     n = len(x)
-    dif_sq = (y - x)**2
+    dif_sq = (y - x) ** 2
     rmse = np.sqrt(np.sum(dif_sq) / n)
 
     return round(rmse, 4)
 
-def sam(org_img: np.ndarray, pred_img: np.ndarray, convert_to_degree: bool = True) -> float:
+
+def sam(
+    org_img: np.ndarray, pred_img: np.ndarray, convert_to_degree: bool = True
+) -> float:
     """
     Spectral Angle Mapper which defines the spectral similarity between two spectra
     """
-        
+
     numerator = np.sum(np.multiply(pred_img, org_img), axis=0)
     denominator = np.linalg.norm(org_img, axis=0) * np.linalg.norm(pred_img, axis=0)
     val = np.clip(numerator / denominator, -1, 1)
@@ -49,7 +53,7 @@ def sam(org_img: np.ndarray, pred_img: np.ndarray, convert_to_degree: bool = Tru
     if convert_to_degree:
         sam_angles = np.rad2deg(sam_angles)
 
-    return round(np.nan_to_num(np.mean(sam_angles)),2)
+    return round(np.nan_to_num(np.mean(sam_angles)), 2)
 
 
 def sre(org_img: np.ndarray, pred_img: np.ndarray):
@@ -58,12 +62,12 @@ def sre(org_img: np.ndarray, pred_img: np.ndarray):
     """
 
     org_img = org_img.astype(np.float32)
-   
+
     # if image is a gray image - add empty 3rd dimension for the .shape[2] to exist
     if org_img.ndim == 2:
         org_img = np.expand_dims(org_img, axis=0)
         pred_img = np.expand_dims(pred_img, axis=0)
-        
+
     sre_final = []
     for i in range(org_img.shape[0]):
         numerator = np.square(np.mean(org_img[i, :, :]))
@@ -72,4 +76,4 @@ def sre(org_img: np.ndarray, pred_img: np.ndarray):
         )
         sre_final.append(numerator / denominator)
 
-    return round(10 * np.log10(np.mean(sre_final)),2)
+    return round(10 * np.log10(np.mean(sre_final)), 2)
