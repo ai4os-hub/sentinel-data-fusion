@@ -32,13 +32,12 @@ if AI4_METADATA_DIR is None:
 _file = f"{AI4_METADATA_DIR}/ai4-metadata.yml"
 with open(_file, "r", encoding="utf-8") as stream:
     AI4_METADATA = yaml.safe_load(stream)
-
 # Project metadata
 PROJECT_METADATA = {
     "name": PACKAGE_METADATA["Name"],
     "description": AI4_METADATA["description"],
-    "license": PACKAGE_METADATA["License"],
-    "version": PACKAGE_METADATA["Version"],
+    "license": PACKAGE_METADATA["License-Expression"],
+    "version": PACKAGE_METADATA["version"],
     "url": PACKAGE_METADATA["Project-URL"],
 }
 
