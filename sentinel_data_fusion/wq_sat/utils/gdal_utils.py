@@ -75,9 +75,8 @@ def save_gdal(
         os.makedirs(path_dir)
 
     # Check file format
-    assert check_gdal_format(
-        file_format
-    ), "File format not supported by GDAL (check https://www.gdal.org/formats_list.html)"
+    if not check_gdal_format(file_format):
+        raise ValueError("File format not supported by GDAL (ver https://www.gdal.org/formats_list.html)")
 
     # Create GDAL dataset
     driver = gdal.GetDriverByName(file_format)
@@ -117,10 +116,10 @@ def save_gdal_test(
     if not os.path.exists(path_dir):
         os.makedirs(path_dir)
 
-    # Check file format
-    assert check_gdal_format(
-        file_format
-    ), "File format not supported by GDAL (check https://www.gdal.org/formats_list.html)"
+    if not check_gdal_format(file_format):
+        raise ValueError(
+            "File format not supported by GDAL (ver https://www.gdal.org/formats_list.html)"
+        )
 
     # Create GDAL dataset
     driver = gdal.GetDriverByName(file_format)

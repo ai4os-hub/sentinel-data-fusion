@@ -47,6 +47,8 @@ include = ["sentinel_data_fusion", "sentinel_data_fusion.*"]
 dependencies = { file = ["requirements.txt"] }
 version = { file = "VERSION" }
 
+[tool.setuptools_scm]
+
 [tool.poetry]
 name = "sentinel-data-fusion"
 version = "0.1.0"

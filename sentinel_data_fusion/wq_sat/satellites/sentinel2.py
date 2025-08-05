@@ -1,6 +1,6 @@
 import os
 import glob
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 import rasterio
 import rasterio.merge
 from ..satellites import atcor
@@ -53,7 +53,7 @@ class S2Reader:
             raise FileNotFoundError(f"Metadata file not found: {metadata_path}")
 
         # Parse the XML
-        tree = ET.parse(metadata_path)
+        tree = ET.safe_parse(metadata_path)
         root = tree.getroot()
 
         # Extract solar angle from the correct file

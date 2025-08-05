@@ -87,12 +87,10 @@ def test(
             res for res in sat_resolutions if res != min_res
         ]  # en S3 es 300
     else:  # si tenemos una resolución máxima sr_resolutions toma su valor
-        assert (
-            max_res in sat_resolutions
-        ), "The selected resolution is not an available choice"
-        assert (
-            max_res != min_res
-        ), "The super-resolution must be larger than the smaller resolution"
+        if max_res not in sat_resolutions:
+            raise ValueError("The selected resolution is not an available choice")
+        if max_res == min_res:
+            raise ValueError("The super-resolution must be larger than the smaller resolution")
         sr_resolutions = [max_res]
 
     models = load_models(

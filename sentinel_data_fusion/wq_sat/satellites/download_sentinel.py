@@ -99,7 +99,7 @@ class download:
         try:
             r = requests.post(
                 "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token",
-                data=data,
+                data=data, timeout=30
             )
             r.raise_for_status()
         except Exception:

@@ -47,11 +47,10 @@ class data_sequence(Sequence):
         self.label_res = np.amax(resolutions)  # resolution of the labels
 
         inputs, labels = self.tiles_to_samples(tiles, patches_dir, resolutions)
-        assert len(inputs) == len(labels)
-        assert len(inputs) != 0, (
-            "Data generator has length zero. Please provide some data for training/validation."
-            "If you don't want to use validation then remove the empty val.txt file."
-        )
+        if len(inputs) != len(labels):
+            raise ValueError("Número de entradas y etiquetas debe coincidir")
+        if len(inputs) == 0:
+            raise ValueError("Data generator has length zero. Proporcione datos o elimine val.txt")
 
         self.inputs = inputs
         self.labels = labels
@@ -131,11 +130,12 @@ class NPYDataGenerator:
         self.label_res = np.amax(resolutions)  # resolution of the labels
 
         inputs, labels = self.tiles_to_samples(tiles, patches_dir, resolutions)
-        assert len(inputs) == len(labels)
-        assert len(inputs) != 0, (
-            "Data generator has length zero. Please provide some data for training/validation."
-            "If you don't want to use validation then remove the empty val.txt file."
-        )
+        if len(inputs) != len(labels):
+            raise ValueError("Número de muestras y etiquetas no coincide")
+        if len(inputs) == 0:
+            raise ValueError(
+                "Data generator has length zero. Proporcione datos o elimine val.txt"
+            )
 
         self.inputs = inputs
         self.labels = labels

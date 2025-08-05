@@ -7,6 +7,22 @@ import numpy as np
 import cv2
 
 
+def safe_extract_tar(tar: tarfile.TarFile, path: str = "."):
+    for member in tar.getmembers():
+        member_path = os.path.join(path, member.name)
+        if not os.path.abspath(member_path).startswith(os.path.abspath(path) + os.sep):
+            raise Exception(f"Path traversal detected in tar file: {member.name}")
+    tar.extractall(path)
+
+
+def safe_extract_zip(zf: zipfile.ZipFile, path: str = "."):
+    for member in zf.namelist():
+        member_path = os.path.join(path, member)
+        if not os.path.abspath(member_path).startswith(os.path.abspath(path) + os.sep):
+            raise Exception(f"Path traversal detected in zip file: {member}")
+    zf.extractall(path)
+
+
 def open_compressed(byte_stream, file_format, output_folder, file_path=None):
     """
     Extract and save a stream of bytes of a compressed file from memory.
@@ -43,13 +59,14 @@ def open_compressed(byte_stream, file_format, output_folder, file_path=None):
         with open(file_path, "wb") as f:
             f.write(byte_stream)
         tar = tarfile.open(file_path)
-        tar.extractall(output_folder)  # specify which folder to extract to
-
+        safe_extract_tar(tar, output_folder)
+        tar.close()
         os.remove(file_path)
 
     elif file_format == "zip":
         zf = zipfile.ZipFile(io.BytesIO(byte_stream))
-        zf.extractall(output_folder)
+        safe_extract_zip(zf, output_folder)
+        zf.close()
     else:
         raise ValueError("Invalid file format for the compressed byte_stream")
 
