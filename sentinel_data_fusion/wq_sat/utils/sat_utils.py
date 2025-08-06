@@ -8,19 +8,23 @@ import cv2
 
 
 def safe_extract_tar(tar: tarfile.TarFile, path: str = "."):
-    for member in tar.getmembers():
+    members = tar.getmembers()
+    for member in members:
         member_path = os.path.join(path, member.name)
         if not os.path.abspath(member_path).startswith(os.path.abspath(path) + os.sep):
             raise Exception(f"Path traversal detected in tar file: {member.name}")
-    tar.extractall(path)
+    for member in members:
+        tar.extract(member, path)
 
 
 def safe_extract_zip(zf: zipfile.ZipFile, path: str = "."):
-    for member in zf.namelist():
-        member_path = os.path.join(path, member)
+    names = zf.namelist()
+    for name in names:
+        member_path = os.path.join(path, name)
         if not os.path.abspath(member_path).startswith(os.path.abspath(path) + os.sep):
-            raise Exception(f"Path traversal detected in zip file: {member}")
-    zf.extractall(path)
+            raise Exception(f"Path traversal detected in zip file: {name}")
+    for name in names:
+        zf.extract(name, path)
 
 
 def open_compressed(byte_stream, file_format, output_folder, file_path=None):
