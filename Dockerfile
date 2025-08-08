@@ -10,10 +10,10 @@
 # Be Aware! For the Jenkins CI/CD pipeline, 
 # input args are defined inside the JenkinsConstants.groovy, not here!
 
-ARG tag=1.12.0-gpu-py36
+ARG tag=2.14.0-gpu
 
 # Base image, e.g. tensorflow/tensorflow:2.9.1
-FROM ai4oshub/tensorflow:${tag}
+FROM tensorflow/tensorflow:${tag}
 
 LABEL maintainer='Fernando Aguilar (IFCA-CSIC), MAr´ia Peña (IFCA-CSIC), Daniel Garc´ia (IFCA-CSIC)'
 LABEL version='0.0.1'
@@ -24,6 +24,7 @@ ARG branch=main
 
 # Install Ubuntu packages
 # - gcc is needed in Pytorch images because deepaas installation might break otherwise (see docs) (it is already installed in tensorflow images)
+# --- Actualización de repositorios e instalación de dependencias de sistema ---
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y --no-install-recommends \
         gcc \
@@ -31,7 +32,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         curl \
         nano \
         wget \
-    && rm -rf /var/lib/apt/lists/*
+        gdal-bin \
+        libgdal-dev \
+        python3-gdal \
+        libgl1 \
+        libgl1-mesa-glx && \
+    rm -rf /var/lib/apt/lists/*
 
 # Update python packages
 # [!] Remember: DEEP API V2 only works with python>=3.6
@@ -69,46 +75,24 @@ RUN git clone https://github.com/ai4os/deep-start /srv/.deep-start && \
 # Necessary for the Jupyter Lab terminal
 ENV SHELL=/bin/bash
 
-# Install user app
-RUN git clone -b $branch https://github.com/ai4os-hub/sentinel-data-fusion
-RUN cd  sentinel-data-fusion
-RUN wget https://share.services.ai4os.eu/s/NqDtGBi49cZBTsT/download/cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h
-RUN mv cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h models
-WORKDIR /srv/sentinel-data-fusion
-RUN pip3 install --no-cache-dir -e .
-
-ENV PYTHONPATH=/app:$PYTHONPATH
-
-RUN  cd ..
-
-# --- Actualización de repositorios e instalación de dependencias de sistema ---
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-      gdal-bin \
-      libgdal-dev \
-      python3-gdal \
-      libgl1 \
-      libgl1-mesa-glx && \
-    rm -rf /var/lib/apt/lists/*
-
 # --- Variables de entorno para compilar los bindings de GDAL ---
-ENV CPLUS_INCLUDE_PATH=/usr/include/gdal \
-    C_INCLUDE_PATH=/usr/include/gdal
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
+
+# Install user app
+RUN git clone -b $branch https://github.com/ai4os-hub/sentinel-data-fusion && \
+    cd  sentinel-data-fusion && \
+    wget https://share.services.ai4os.eu/s/NqDtGBi49cZBTsT/download/cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h && \
+    mv cnn_model_60epochs_exactPatches_35tiles_32lay_256fm_normmeanvar.h models && \
+    pip3 install --no-cache-dir -e . && \
+    cd ..
+
+WORKDIR /srv/sentinel-data-fusion
+ENV PYTHONPATH=/srv/sentinel-data-fusion
 
 # --- Actualiza pip y instala los paquetes Python requeridos ---
-RUN python3 -m pip install --upgrade pip && \
-    pip install --no-cache-dir \
-      gdal==3.4.1 \
-      "numpy<2" \
-      "opencv-python<4.12" \
-      scikit-image \
-      xmltodict \
-      tqdm \
-      rasterio \
-      xarray \
-      shapely \
-      rioxarray \
-      netCDF4
+# Ensure installation of the correct gdal version
+RUN pip install --no-cache --force-reinstall gdal=="$(gdal-config --version).*"
 
 # Open ports: DEEPaaS (5000), Monitoring (6006), Jupyter (8888)
 EXPOSE 5000 6006 8888

@@ -35,10 +35,12 @@ env = [
 # https://docs.pytest.org/en/7.1.x/explanation/goodpractices.html
 addopts = "--import-mode=importlib"
 
-[tool.setuptools.packages.find]
-where = ["sentinel_data_fusion"]
-include = ["sentinel_data_fusion", "sentinel_data_fusion.*"]
+[tool.setuptools]
+packages = ["sentinel_data_fusion"]
 
+#[tool.setuptools.packages.find]
+#where = ["sentinel_data_fusion"]
+#include = ["sentinel_data_fusion", "sentinel_data_fusion.*"]
 
 [tool.setuptools.package-dir]
 "sentinel_data_fusion" = "sentinel_data_fusion"
@@ -47,7 +49,7 @@ include = ["sentinel_data_fusion", "sentinel_data_fusion.*"]
 dependencies = { file = ["requirements.txt"] }
 version = { file = "VERSION" }
 
-[tool.setuptools_scm]
+#[tool.setuptools_scm]
 
 [tool.poetry]
 name = "sentinel-data-fusion"
