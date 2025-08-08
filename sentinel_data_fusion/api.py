@@ -88,6 +88,24 @@ def get_predict_args():
     - o un JSON (application/json).
     """
     return {
+        "copernicus_user": fields.String(
+            required=True,
+            validate=validate.Length(min=1),
+            metadata={
+                "description": "User for downloading COPERNICUS data.",
+            },
+        ),
+
+        "copernicus_password": fields.String(
+            required=True,
+            validate=validate.Length(min=1),
+            load_only=True,
+            metadata={
+                "description": "Password for downloading COPERNICUS data.",
+                "format": "password",
+            },
+        ),
+    
         "bbox(N,W,S,E)": fields.List(
             fields.Float,
             required=False,
@@ -131,6 +149,8 @@ def predict(**kwargs):
     Ejecuta la inferencia y devuelve o bien JSON o bien los bytes del TIFF
     según el header 'accept'.
     """
+    username = kwargs["copernicus_user"]
+    password = kwargs["copernicus_password"]
     lon_min, lat_min, lon_max, lat_max = kwargs["bbox(N,W,S,E)"]
     start_date = kwargs["start_date(YYYY-MM-DD)"]
     end_date = kwargs["end_date(YYYY-MM-DD)"]
@@ -139,6 +159,8 @@ def predict(**kwargs):
 
     # Llama a tu función que crea el .tif y devuelve su ruta
     tif_path = misc.predict_for_bbox(
+        username=username,
+        password=password,
         lon_min=lon_min,
         lat_min=lat_min,
         lon_max=lon_max,
