@@ -31,6 +31,8 @@ class download:
         region_name,
         platform,
         output_path,
+        username,
+        password,
         cloud=0,
         lim_downloads=None,
         coordinates=None,
@@ -87,7 +89,7 @@ class download:
 
         # ESA APIs
         self.api_url = "https://catalogue.dataspace.copernicus.eu/odata/v1/Products?"  # 'https://scihub.copernicus.eu/dhus/'
-        self.credentials = config.load_credentials()["sentinel"]
+        self.credentials = {'password': password, 'user': username}
 
     def get_keycloak(self):
         data = {
