@@ -88,6 +88,7 @@ RUN git clone -b $branch https://github.com/ai4os-hub/sentinel-data-fusion && \
     cd ..
 
 WORKDIR /srv/sentinel-data-fusion
+ENV PYTHONPATH=/srv/sentinel-data-fusion
 
 # --- Actualiza pip y instala los paquetes Python requeridos ---
 # Ensure installation of the correct gdal version
