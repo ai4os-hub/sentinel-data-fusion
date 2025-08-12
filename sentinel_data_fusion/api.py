@@ -57,7 +57,7 @@ def get_metadata():
         metadata = config.PROJECT_METADATA
         # TODO: Add dynamic metadata collection here
         logger.debug("Package model metadata: %s", metadata)
-        names = re.findall(r'"([^"]+)"', metadata['author'])
+        names = re.findall(r'"([^"]+)"', metadata["author"])
         if names:
             metadata["author"] = ", ".join(names)
         else:
@@ -95,7 +95,6 @@ def get_predict_args():
                 "description": "User for downloading COPERNICUS data.",
             },
         ),
-
         "copernicus_password": fields.String(
             required=True,
             validate=validate.Length(min=1),
@@ -105,7 +104,6 @@ def get_predict_args():
                 "format": "password",
             },
         ),
-    
         "bbox(N,W,S,E)": fields.List(
             fields.Float,
             required=False,

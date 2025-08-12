@@ -90,7 +90,9 @@ def test(
         if max_res not in sat_resolutions:
             raise ValueError("The selected resolution is not an available choice")
         if max_res == min_res:
-            raise ValueError("The super-resolution must be larger than the smaller resolution")
+            raise ValueError(
+                "The super-resolution must be larger than the smaller resolution"
+            )
         sr_resolutions = [max_res]
 
     models = load_models(

@@ -76,7 +76,9 @@ def save_gdal(
 
     # Check file format
     if not check_gdal_format(file_format):
-        raise ValueError("File format not supported by GDAL (ver https://www.gdal.org/formats_list.html)")
+        raise ValueError(
+            "File format not supported by GDAL (ver https://www.gdal.org/formats_list.html)"
+        )
 
     # Create GDAL dataset
     driver = gdal.GetDriverByName(file_format)
