@@ -50,7 +50,9 @@ class data_sequence(Sequence):
         if len(inputs) != len(labels):
             raise ValueError("Número de entradas y etiquetas debe coincidir")
         if len(inputs) == 0:
-            raise ValueError("Data generator has length zero. Proporcione datos o elimine val.txt")
+            raise ValueError(
+                "Data generator has length zero. Proporcione datos o elimine val.txt"
+            )
 
         self.inputs = inputs
         self.labels = labels

@@ -1,11 +1,26 @@
 metadata_version: 2.0.0
-title: sentinel-data-fusion
-summary: "Sentinel-2 and Sentinel-3 data fusion with CNN and GAN"
+title: Sentinel-2 and Sentinel-3 data fusion with CNN and GAN
+summary: Fusion of Sentinel-2 and Sentinel-3 data to increse the spatial resolution of Sentinel-3 bands (21) to 10m"
 description: |-
-  sentinel_data_fusion is an application using the DEEPaaS API.
-  Sentinel-2 and Sentinel-3 data fusion with CNN and GAN.
-  With this services, users can combine data for a given area of
-  interest and a certain period of time
+  Multispectral satellites like the Sentinel-2A/B twin satellites with high spatial resolution (10, 20, and 60 meters Ground Sample Distance - GSD), provide multispectral images with only 13 spectral bands, while high spectral resolution satellites like the Sentinel-3 mission, with 21 spectral bands, have a minimum spatial resolution of 300 meters. This model implements a data-driven fusion method that combines the data from these two satellite missions to obtain new products with the best of both in terms of spatial and spectral resolution. For this purpose, a powerful neural network has been trained with data from different latitudes and terrains at lower resolutions
+  
+  **Data**
+  
+  To train the networks, it was assumed that the transfer of details from HR bands to LR bands is scale-invariant and depends only on the scale factor between resolutions, which in this case is 30. That is, the mappings 300m->10m and 9km->300m were considered equivalent, allowing the second case to be trained and applied to the first case. Moreover, images were split into squared patches for computational reasons. Finally, the dataset was divided into training, validation, and testing sets.
+  
+  The source is Copernicus data, where different scenarios have been selected to represent surface diversity (Coast, Desert, Urban, etc.) with a maximum of one day of difference between Sentinel-2 and Sentinel-3 data and with a minimum of cloud coverage.
+
+
+**Inference**
+This module supports inference where different input information is required:
+
+* Copernicus login data (input/output)
+* Area of interest - Bounding Box in N, W, S, E
+* Start and End Dates
+* Output name
+
+The output are generated in GeoTiFF format.
+  
 # doi: http://add-some-DOI-url.com
 dates:
   created: "2025-07-22"
@@ -42,7 +57,7 @@ tasks:       # required property, uncomment together with relevant items
   # - Other
 categories:  # required property, uncomment together with relevant items
   # - AI4 trainable
-  # - AI4 pre trained
+  - AI4 pre trained
   - AI4 inference
   # - AI4 tools
 libraries:   # required property, uncomment together with relevant items

@@ -89,7 +89,7 @@ class download:
 
         # ESA APIs
         self.api_url = "https://catalogue.dataspace.copernicus.eu/odata/v1/Products?"  # 'https://scihub.copernicus.eu/dhus/'
-        self.credentials = {'password': password, 'user': username}
+        self.credentials = {"password": password, "user": username}
 
     def get_keycloak(self):
         data = {
@@ -101,7 +101,8 @@ class download:
         try:
             r = requests.post(
                 "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token",
-                data=data, timeout=30
+                data=data,
+                timeout=30,
             )
             r.raise_for_status()
         except Exception:
