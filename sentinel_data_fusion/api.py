@@ -68,10 +68,6 @@ def get_metadata():
         raise  # Reraise the exception after log
 
 
-# def warm():
-#     pass
-#
-#
 def get_predict_args():
     """
     **Descripción general de la operación**
@@ -149,6 +145,7 @@ def predict(**kwargs):
     """
     username = kwargs["copernicus_user"]
     password = kwargs["copernicus_password"]
+    
     lon_min, lat_min, lon_max, lat_max = kwargs["bbox(N,W,S,E)"]
     start_date = kwargs["start_date(YYYY-MM-DD)"]
     end_date = kwargs["end_date(YYYY-MM-DD)"]
