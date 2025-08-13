@@ -11,15 +11,15 @@ description: |-
   The source is Copernicus data, where different scenarios have been selected to represent surface diversity (Coast, Desert, Urban, etc.) with a maximum of one day of difference between Sentinel-2 and Sentinel-3 data and with a minimum of cloud coverage.
 
 
-**Inference**
-This module supports inference where different input information is required:
+  **Inference**
+  This module supports inference where different input information is required
 
-* Copernicus login data (input/output)
-* Area of interest - Bounding Box in N, W, S, E
-* Start and End Dates
-* Output name
+  * Copernicus login data (input/output)
+  * Area of interest - Bounding Box in N, W, S, E
+  * Start and End Dates
+  * Output name
 
-The output are generated in GeoTiFF format.
+  The output are generated in GeoTiFF format.
   
 # doi: http://add-some-DOI-url.com
 dates:
