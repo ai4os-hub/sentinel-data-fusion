@@ -1,6 +1,6 @@
 webargs~=5.5.3
 deepaas>=2.1.0
-gdal==3.4.1
+gdal==3.13.0
 numpy<2
 opencv-python<4.12
 scikit-image
